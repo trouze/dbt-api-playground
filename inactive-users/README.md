@@ -1,0 +1,1 @@
+Checks the dbt Cloud admin API for a list of current users, then determines if any haven't been active in over 30 days, and then sends a Slack notification.

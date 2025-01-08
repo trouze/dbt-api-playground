@@ -1,0 +1,27 @@
+name: Inactive Users
+
+on:
+    workflow_dispatch:
+    schedule:
+        - cron: '0 0 * * *' # Runs daily at midnight
+
+jobs:
+    run-inactive-users:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+                uses: actions/checkout@v4
+
+            - name: Install uv
+            uses: astral-sh/setup-uv@v5
+
+            - name: Install dependencies
+                run: uv sync --directory inactive-users/
+
+            - name: Run inactive users script
+                env:
+                    DBT_CLOUD_API_TOKEN: ${{ secrets.DBT_CLOUD_API_TOKEN }}
+                    DBT_CLOUD_ACCOUNT_ID: ${{ secrets.DBT_CLOUD_ACCOUNT_ID }}
+                    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                run: uv run inactive-users/main.py
