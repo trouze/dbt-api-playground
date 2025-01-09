@@ -68,6 +68,12 @@ wheels = [
 name = "dbt-api-playground"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "requests", specifier = ">=2.32.3" }]
 
 [[package]]
 name = "idna"

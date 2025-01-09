@@ -1,5 +1,6 @@
 import requests
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from dateutil import parser
 import os
 import smtplib
 from email.mime.text import MIMEText
@@ -30,9 +31,9 @@ def get_users():
 # Check for inactive users
 def check_inactive_users(users):
     inactive_users = []
-    threshold_date = datetime.now() - timedelta(days=30)
+    threshold_date = datetime.now(timezone.utc) - timedelta(days=30)
     for user in users:
-        last_login = datetime.strptime(user['last_login'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        last_login = parser.parse(user['last_login'])
         if last_login < threshold_date:
             inactive_users.append(user)
     return inactive_users
